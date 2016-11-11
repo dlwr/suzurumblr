@@ -15,10 +15,16 @@ function poll() {
   client.blogPosts('dlwr', {api_key: 'KEY'})
     .then(resp => {
       const promises = []
-      for (let post of resp.posts) {
+      const posts = resp.posts.sort((a, b) => {
+        if (a.id < b.id) return -1
+        if (a.id > b.id) return 1
+        return 0
+      })
+      for (let post of posts) {
         if (lastPostId >= post.id) {
-          return true
+          continue
         }
+        lastPostId = post.id
         let res
         if (post.type == 'photo') {
           res = fetch('https://suzuri.jp/api/v1/materials', {
@@ -53,12 +59,11 @@ function poll() {
             })
           })
         }
-        lastPostId = post.id
         promises.push(res)
       }
       return Promise.all(promises)
-    }).then(value => {
-      console.log('終わりました')
+    }).then(values => {
+      console.log(values.length + '個作りました')
     })
 }
 
