@@ -1,0 +1,21 @@
+{
+  "name": "suzurumblr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "feed.js",
+  "dependencies": {
+    "cron": "^1.1.1",
+    "es6-promise": "^4.0.5",
+    "feedparser": "^1.1.5",
+    "isomorphic-fetch": "^2.2.1",
+    "node-fetch": "^1.6.3",
+    "request": "^2.78.0",
+    "tumblr.js": "^1.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
