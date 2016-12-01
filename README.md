@@ -5,4 +5,5 @@
 `Reblog Advent Calend*e*r 7` で使ってるやつです
 
 https://reblogadventcalender7.tumblr.com
+
 https://suzuri.jp/reblogadventcalender7
