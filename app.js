@@ -33,6 +33,7 @@ const itemVariants = {"1": [71, 99, 431, 89, 103, 389, 86, 72, 5, 49, 371, 1, 7,
 let lastPostId
 let lastOmoide
 function poll() {
+  let promises
   new Promise((resolve, reject) => {
     return fs.readFile('./lastPostId', function (err, text) {
       if (err) {
@@ -55,7 +56,7 @@ function poll() {
   }).then(() => {
     return client.blogPosts(ACCOUNT, {api_key: 'KEY'})
   }).then(resp => {
-      const promises = []
+    promises = []
       const posts = resp.posts.sort((a, b) => {
         if (a.id < b.id) return -1
         if (a.id > b.id) return 1
@@ -109,7 +110,8 @@ function poll() {
             })
           })
         }
-      res.then(resp =>  resp.json())
+      let f = function() {
+        return res.then(resp =>  resp.json())
       .then(productResp => {
         let choicePromise
         if (!lastOmoide || lastPostDate != lastOmoide.title) {
@@ -135,11 +137,12 @@ function poll() {
           })
         })
       })
-        promises.push(res)
       }
-      return Promise.all(promises)
+      promises.push(f)
+    }
+    return promises.reduce((m, p) => m.then(p), Promise.resolve(100))
     }).then(values => {
-      console.log(new Date(Date.now()).toISOString() + ':' + values.length + '個作りました')
+    console.log(new Date(Date.now()).toISOString() + ':' + promises.length + '個作りました')
     fs.writeFile("./lastPostId", `${lastPostId}`)
     })
 }
