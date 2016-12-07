@@ -68,6 +68,7 @@ function poll() {
           continue
         }
         lastPostId = post.id
+      fs.writeFileSync("./lastPostId", `${lastPostId}`)
       let lastPostDate = (new Date(post.timestamp * 1000)).toDateString()
         let res
         if (post.type == 'photo') {
@@ -109,6 +110,8 @@ function poll() {
               description: post.post_url,
             })
           })
+      } else {
+        continue
         }
       let f = function() {
         return res.then(resp =>  resp.json())
@@ -143,7 +146,6 @@ function poll() {
     return promises.reduce((m, p) => m.then(p), Promise.resolve(100))
     }).then(values => {
     console.log(new Date(Date.now()).toISOString() + ':' + promises.length + '個作りました')
-    fs.writeFile("./lastPostId", `${lastPostId}`)
     })
 }
 
